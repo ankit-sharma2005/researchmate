@@ -1,0 +1,57 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    (() => {
+      let theme;
+      try {
+        theme = localStorage.getItem("researchmate-theme");
+      } catch (error) {
+        theme = null;
+      }
+      if (theme !== "light" && theme !== "dark") {
+        theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      }
+      document.documentElement.setAttribute("data-bs-theme", theme);
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="{% static 'research/css/theme.css' %}" rel="stylesheet">
+  <title>{% block title %}ResearchMate{% endblock %}</title>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="{% url 'research:index' %}">ResearchMate</a>
+      <div class="d-flex align-items-center gap-2">
+        <button class="btn btn-outline-secondary btn-sm" id="theme-toggle" type="button"
+                aria-label="Switch color theme" title="Switch color theme">
+          <span id="theme-icon" aria-hidden="true">☾</span>
+        </button>
+        {% if user.is_authenticated %}
+          <span class="navbar-text d-none d-sm-inline">Signed in as <strong>{{ user.username }}</strong></span>
+          <form method="post" action="{% url 'accounts:logout' %}" class="m-0">
+            {% csrf_token %}
+            <button class="btn btn-outline-secondary btn-sm" type="submit">Logout</button>
+          </form>
+        {% else %}
+          <a class="btn btn-outline-secondary btn-sm" href="{% url 'accounts:login' %}">Log in</a>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-5">
+    {% block content %}{% endblock %}
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="{% static 'research/researchmate.js' %}"></script>
+</body>
+</html>

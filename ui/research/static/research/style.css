@@ -1,0 +1,60 @@
+body {
+  min-height: 100vh;
+}
+
+.navbar-brand {
+  letter-spacing: -0.03em;
+}
+
+.research-loading[hidden] {
+  display: none !important;
+}
+
+.plain-content {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.65;
+}
+
+.markdown-report {
+  overflow-wrap: anywhere;
+  line-height: 1.7;
+}
+
+.markdown-report > :last-child {
+  margin-bottom: 0;
+}
+
+.markdown-report pre {
+  padding: 1rem;
+  overflow-x: auto;
+  border-radius: 0.5rem;
+  background: var(--bs-tertiary-bg);
+}
+
+.markdown-report table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+}
+
+.markdown-report th,
+.markdown-report td {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--bs-border-color);
+}
+
+.markdown-report blockquote {
+  padding-left: 1rem;
+  border-left: 0.25rem solid var(--bs-primary);
+  color: var(--bs-secondary-color);
+}
+
+.nav-tabs {
+  border-bottom: 0;
+}
+
+.form-text ul {
+  padding-left: 1.2rem;
+}

@@ -1,0 +1,70 @@
+{% extends "research/base.html" %}
+{% block title %}Research results | ResearchMate{% endblock %}
+{% block content %}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+  <div>
+    <a class="small text-decoration-none" href="{% url 'research:index' %}">&larr; New research</a>
+    <div class="d-flex align-items-center gap-2 mt-2 mb-1">
+      <h1 class="h2 mb-0">Research results</h1>
+      <span class="badge text-bg-secondary">{{ depth|title }} mode</span>
+    </div>
+    <p class="text-body-secondary mb-0">Topic: <strong>{{ topic }}</strong></p>
+  </div>
+  <form method="post" action="{% url 'research:download_report' %}">
+    {% csrf_token %}
+    <input type="hidden" name="report" value="{{ report }}">
+    <input type="hidden" name="topic" value="{{ topic }}">
+    <button class="btn btn-primary" type="submit">Download Report</button>
+  </form>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-header p-0">
+    <ul class="nav nav-tabs card-header-tabs px-3 pt-3 flex-nowrap overflow-auto" id="result-tabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active text-nowrap" id="search-tab" data-bs-toggle="tab"
+                data-bs-target="#search-panel" type="button" role="tab" aria-controls="search-panel"
+                aria-selected="true">Search Results</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link text-nowrap" id="scraped-tab" data-bs-toggle="tab"
+                data-bs-target="#scraped-panel" type="button" role="tab" aria-controls="scraped-panel"
+                aria-selected="false">Scraped Content</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link text-nowrap" id="report-tab" data-bs-toggle="tab"
+                data-bs-target="#report-panel" type="button" role="tab" aria-controls="report-panel"
+                aria-selected="false">Final Report</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link text-nowrap" id="feedback-tab" data-bs-toggle="tab"
+                data-bs-target="#feedback-panel" type="button" role="tab" aria-controls="feedback-panel"
+                aria-selected="false">Critic Review</button>
+      </li>
+    </ul>
+  </div>
+  <div class="card-body p-3 p-md-4">
+    <div class="tab-content">
+      <section class="tab-pane fade show active" id="search-panel" role="tabpanel" aria-labelledby="search-tab" tabindex="0">
+        <h2 class="h5">Search Results</h2>
+        <div class="plain-content">{{ search_results|default:"No search results were returned." }}</div>
+      </section>
+      <section class="tab-pane fade" id="scraped-panel" role="tabpanel" aria-labelledby="scraped-tab" tabindex="0">
+        <h2 class="h5">Scraped Content</h2>
+        <div class="plain-content">{{ scraped_content|default:"No scraped content was returned." }}</div>
+      </section>
+      <section class="tab-pane fade" id="report-panel" role="tabpanel" aria-labelledby="report-tab" tabindex="0">
+        <h2 class="h5">Final Report</h2>
+        <article class="markdown-report">{{ report_html }}</article>
+      </section>
+      <section class="tab-pane fade" id="feedback-panel" role="tabpanel" aria-labelledby="feedback-tab" tabindex="0">
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <h2 class="h5 mb-0">Critic Review</h2>
+          {% if score %}<span class="badge rounded-pill text-bg-primary fs-6">Score: {{ score }}/10</span>{% endif %}
+        </div>
+        <div class="plain-content">{{ feedback|default:"No critic feedback was returned." }}</div>
+      </section>
+    </div>
+  </div>
+</div>
+{% endblock %}
